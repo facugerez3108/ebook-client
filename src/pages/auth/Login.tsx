@@ -4,32 +4,31 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 
 const LoginPage = () => {
-  
   const navigate = useNavigate();
-  const {login: authLogin} = useContext(AuthContext);
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const { login: authLogin } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value)
-  }
-  
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
-  }
+    setPassword(e.target.value);
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    
-    try{
-      const response = await login(username, password);
+
+    try {
+      const response = await login(email, password);
       const accessToken = response.tokens.access.token;
       authLogin(accessToken);
       navigate("/dashboard");
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -47,18 +46,18 @@ const LoginPage = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label
-                  htmlFor="username"
+                  htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Nombre de usuario
+                  Correo electronico
                 </label>
                 <input
-                  id="username"
+                  id="email"
                   type="text"
-                  value={username}
-                  onAbort={handleUsernameChange}
+                  value={email}
+                  onChange={handleEmailChange}
                   required
-                  placeholder="Ingresa tu nombre de usuario"
+                  placeholder="Ingresa tu correo"
                   className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400
                     focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 />
@@ -81,15 +80,15 @@ const LoginPage = () => {
                     focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 />
               </div>
+              
+                <button
+                  type="submit"
+                  className="w-full px-4 py-2 text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 rounded-md"
+                >
+                  Iniciar Sesión
+                </button>
+              
             </form>
-          </div>
-          <div className="px-6 py-4 bg-gray-50">
-            <button
-              type="submit"
-              className="w-full px-4 py-2 text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 rounded-md"
-            >
-              Iniciar Sesión
-            </button>
           </div>
         </div>
       </div>
