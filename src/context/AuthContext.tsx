@@ -3,6 +3,7 @@ import { getUserRole } from "../actions/user.actions";
 
 interface User {
     role: string;
+    name: string;
 }
 
 interface AuthContextProps {
@@ -19,6 +20,8 @@ const AuthContext = createContext<AuthContextProps>({
     user: null
 });
 
+
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [ isAuthenticated, setIsAuthenticated ] = useState<boolean>(false);
     const [user, setUser] = useState<User | null>(null);
@@ -26,9 +29,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-          getUserRole(token).then((role) => {
+          getUserRole(token).then((userData) => {
             setIsAuthenticated(true);
-            setUser({ role });
+            setUser({ role: userData.role, name: userData.name });
           }).catch((error) => {
             console.error("Error al obtener el rol del usuario", error);
             logout();
@@ -42,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem("token", token);
             const role = await getUserRole(token);
             setIsAuthenticated(true);
-            setUser({ role });
+            setUser({ role, name: role.name });
        }catch(error){
             console.error("Error al obtener el rol del usuario", error);
             logout();

@@ -15,16 +15,17 @@ const Navbar = () => {
             </a>
           </div>
 
-          <div className="flex items-center">
-            {isAuthenticated ? (
+          {isAuthenticated ? (
+            <div className="flex items-center">
+              <label className="ml-2">{user && user.name}</label>
               <button
                 className="p-1 rounded-full hover:bg-gray-800 ml-4 focus:outline-one focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus-ring-white"
                 aria-label="Menú de Usuario"
               >
                 <User className="h-6 w-6" />
               </button>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </nav>

@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { AuthResponse } from '../types/types';
 
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
+
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
     try{
-        const response = await axios.post<AuthResponse>(`http://localhost:5000/api/auth/login`, {
+        const response = await axios.post<AuthResponse>(`${serverUrl}/api/auth/login`, {
             email,
             password
         })
@@ -19,7 +21,7 @@ export const login = async (email: string, password: string): Promise<AuthRespon
 
 export const logout = async () => {
     try{
-        const response = await axios.post(`${process.env.SERVER_APP_URL}/api/auth/logout`);
+        const response = await axios.post(`${serverUrl}/api/auth/logout`);
         console.log(response.data);
         return response.data;
     }catch(error){

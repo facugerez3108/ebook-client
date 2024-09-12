@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
+
 export const createUser = async (name: string, email: string, password: string, role: string) => {
   try{
-    const response = await axios.post(`${process.env.SERVER_APP_URL}/api/auth/register`, {
+    const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/register`, {
       name,
       email,
       password,
@@ -18,7 +20,7 @@ export const createUser = async (name: string, email: string, password: string, 
 
 export const getUser = async (id: number) => {
   try {
-    const serverUrl = process.env.SERVER_APP_URL || 'http://localhost:5000';
+    
     const response = await axios.get(`${serverUrl}/api/users/${id}`);
     console.log(response.data);
     return response.data;
@@ -30,7 +32,7 @@ export const getUser = async (id: number) => {
 
 export const getUsers = async () => {
   try{
-    const response = await axios.get(`${process.env.SERVER_APP_URL}/api/users`);
+    const response = await axios.get(`${serverUrl}/api/users`);
     console.log(response.data);
     return response.data;
 
@@ -41,7 +43,7 @@ export const getUsers = async () => {
 
 export const getUserRole = async (token: string) => {
   try{
-    const response = await axios.get(`http://localhost:5000/api/users/role`, {
+    const response = await axios.get(`${serverUrl}/api/users/role`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -56,7 +58,7 @@ export const getUserRole = async (token: string) => {
 
 export const deleteUser = async (id: number) => {
   try{
-    const response = await axios.delete(`${process.env.SERVER_APP_URL}/api/users/${id}`);
+    const response = await axios.delete(`${serverUrl}/api/users/${id}`);
     console.log(response.data);
     return response.data;
 

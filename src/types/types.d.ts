@@ -2,11 +2,11 @@ export interface AuthResponse {
     tokens: {
         access: {
             token: string,
-            expires: string // Puedes ajustar el tipo de dato según el formato de fecha y hora que estés utilizando
+            expires: string 
         },
         refresh: {
             token: string,
-            expires: string // Puedes ajustar el tipo de dato según el formato de fecha y hora que estés utilizando
+            expires: string 
         }
     },
     user: UserProps
