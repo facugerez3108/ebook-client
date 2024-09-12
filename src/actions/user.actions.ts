@@ -17,19 +17,20 @@ export const createUser = async (name: string, email: string, password: string, 
 };
 
 export const getUser = async (id: number) => {
-  try{
-    const response = await axios.get(`${process.env.SERVER_APP_URL}/api/auth/user/${id}`);
+  try {
+    const serverUrl = process.env.SERVER_APP_URL || 'http://localhost:5000';
+    const response = await axios.get(`${serverUrl}/api/users/${id}`);
     console.log(response.data);
     return response.data;
-
-  }catch(error){
+  } catch (error) {
     console.log(error);
+    throw new Error("Error al obtener el usuario.");
   }
 };
 
-export const queryUsers = async () => {
+export const getUsers = async () => {
   try{
-    const response = await axios.get(`${process.env.SERVER_APP_URL}/api/auth/users`);
+    const response = await axios.get(`${process.env.SERVER_APP_URL}/api/users`);
     console.log(response.data);
     return response.data;
 
@@ -40,12 +41,11 @@ export const queryUsers = async () => {
 
 export const getUserRole = async (token: string) => {
   try{
-    const response = await axios.get(`${process.env.SERVER_APP_URL}/api/auth/user/role}`, {
+    const response = await axios.get(`http://localhost:5000/api/users/role`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
     });
-    console.log(response.data);
     return response.data.role;
 
   }catch(error){
@@ -56,7 +56,7 @@ export const getUserRole = async (token: string) => {
 
 export const deleteUser = async (id: number) => {
   try{
-    const response = await axios.delete(`${process.env.SERVER_APP_URL}/api/auth/user/${id}`);
+    const response = await axios.delete(`${process.env.SERVER_APP_URL}/api/users/${id}`);
     console.log(response.data);
     return response.data;
 
