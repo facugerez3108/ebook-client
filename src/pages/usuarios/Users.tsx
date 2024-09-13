@@ -38,10 +38,21 @@ const initialState: User[] = [
 ];
 
 const UsersPage = () => {
-  const [users] = useState<User[]>(initialState);
+  //const [users] = useState<User[]>(initialState);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchItem, setSearchItem] = useState("");
   const userPerPage = 10;
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const data = await getUsers();
+      console.log(data)
+      setUsers(data);
+    };
+    fetchUsers();
+  }, []);
 
   const filteredUser = users.filter(
     (user) =>
