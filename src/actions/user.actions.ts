@@ -4,10 +4,25 @@ const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
 
 export const createUser = async (name: string, email: string, password: string, role: string) => {
   try{
-    const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/register`, {
+    const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/users/`, {
       name,
       email,
       password,
+      role
+    });
+    console.log(response.data);
+    return response.data;
+
+  }catch(error){
+    console.log(error);
+  }
+};
+
+export const editUser = async (id: number, name: string, email: string, role: string) => {
+  try{
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/users/${id}`, {
+      name,
+      email,
       role
     });
     console.log(response.data);

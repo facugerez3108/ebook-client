@@ -9,7 +9,10 @@ import {
   Edit,
   Trash2,
 } from "lucide-react";
-import { getUsers } from "../../actions/user.actions";
+import { getUsers, createUser, deleteUser, editUser } from "../../actions/user.actions";
+import Alert from "../../components/ui/alert";
+import CreateUserModal from "./components/create-user-modal";
+
 
 interface User {
   id: number;
@@ -19,38 +22,28 @@ interface User {
   createdAt: string;
 }
 
-//test
-const initialState: User[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "Admin",
-    createdAt: "2022-01-01",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "User",
-    createdAt: "2022-02-15",
-  },
-];
-
 const UsersPage = () => {
-  //const [users] = useState<User[]>(initialState);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchItem, setSearchItem] = useState("");
   const userPerPage = 10;
 
   const [users, setUsers] = useState<User[]>([]);
 
+  //alert modal
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+
+  //create user modal
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+
+  const fetchUsers = async () => {
+    const data = await getUsers();
+    setUsers(data);
+  };
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      const data = await getUsers();
-      console.log(data)
-      setUsers(data);
-    };
+    
     fetchUsers();
   }, []);
 
@@ -66,6 +59,20 @@ const UsersPage = () => {
   const currentUsers = filteredUser.slice(indexofFirstUser, indexOfLastUser);
 
   const totalPages = Math.ceil(filteredUser.length / userPerPage);
+  
+  const handleDelete = async (id: number) => {
+    setSelectedUserId(id);
+    setIsAlertOpen(true);
+  }
+
+  const confirmDelete = async () => {
+    if(selectedUserId !== null){
+      await deleteUser(selectedUserId);
+      setUsers(users.filter((user) => user.id !== selectedUserId));
+      setIsAlertOpen(false);
+      setSelectedUserId(null);
+    }
+  }
 
   return (
     <Layout>
@@ -76,7 +83,10 @@ const UsersPage = () => {
             <h2 className="text-lg font-semibold">Lista de Usuarios</h2>
           </div>
           <div className="p-4">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            <button 
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              onClick={() => setIsCreateModalOpen(true)}
+            >
               Nuevo Usuario
             </button>
           </div>
@@ -125,7 +135,7 @@ const UsersPage = () => {
                     <button className="text-blue-500 hover:text-blue-600 mr-2">
                       <Edit size={18} />
                     </button>
-                    <button className="text-red-500 hover:text-red-600">
+                    <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:text-red-600">
                       <Trash2 size={18} />
                     </button>
                   </td>
@@ -175,6 +185,27 @@ const UsersPage = () => {
           </div>
         </div>
       </div>
+      
+      {/** MODAL ALERT DE ELIMINACIÓN DE USUARIO */}
+      <Alert
+        message="Confirmar Eliminacion"
+        type="warning"
+        description="¿Estas seguro que quieres eliminar este usuario? No podras revertir esta elección"
+        onClose={() => setIsAlertOpen(false)}
+        isOpen={isAlertOpen}
+        onConfirm={confirmDelete}
+      />
+      {/** FIN MODAL ALERT */}
+
+      {/** MODAL PARA CREAR NUEVO USUARIO */}
+      <CreateUserModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)} 
+      />
+      {/** FIN MODAL */}
+
+      
+
     </Layout>
   );
 };
