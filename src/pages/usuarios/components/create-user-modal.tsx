@@ -6,9 +6,10 @@ import toast from "react-hot-toast";
 interface CreateUserModalProps {
   isOpen: boolean;
   onClose: () => void;
+  refreshUsers: () => void;
 }
 
-const CreateUserModal: React.FC<CreateUserModalProps> = ({isOpen, onClose}) => {
+const CreateUserModal: React.FC<CreateUserModalProps> = ({isOpen, onClose, refreshUsers}) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -22,8 +23,9 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({isOpen, onClose}) => {
     setIsLoading(true);
     try {
       await createUser(name, email, password, role);
-      onClose(); // Cerrar modal al crear usuario
       toast.success("Usuario creado correctamente");
+      onClose();
+      refreshUsers();
     } catch (error) {
       setError((error as Error).message);
     } finally {

@@ -10,9 +10,11 @@ import {
   Trash2,
 } from "lucide-react";
 import { getUsers, createUser, deleteUser, editUser } from "../../actions/user.actions";
+
+//MODALS
 import Alert from "../../components/ui/alert";
 import CreateUserModal from "./components/create-user-modal";
-
+import EditUserModal from "./components/edit-user-modal";
 
 interface User {
   id: number;
@@ -35,6 +37,9 @@ const UsersPage = () => {
 
   //create user modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  //edit user modal
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
 
   const fetchUsers = async () => {
@@ -132,7 +137,7 @@ const UsersPage = () => {
                   <td className="p-3">{user.email}</td>
                   <td className="p-3">{user.createdAt}</td>
                   <td className="p-3">
-                    <button className="text-blue-500 hover:text-blue-600 mr-2">
+                    <button onClick={() => setIsEditModalOpen(true)} className="text-blue-500 hover:text-blue-600 mr-2">
                       <Edit size={18} />
                     </button>
                     <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:text-red-600">
@@ -197,14 +202,22 @@ const UsersPage = () => {
       />
       {/** FIN MODAL ALERT */}
 
+      
       {/** MODAL PARA CREAR NUEVO USUARIO */}
       <CreateUserModal
         isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)} 
+        onClose={() => setIsCreateModalOpen(false)}
+        refreshUsers={fetchUsers} 
       />
       {/** FIN MODAL */}
 
-      
+      {/** MODAL PARA EDITAR USUARIO */}
+      <EditUserModal 
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          refreshUsers={fetchUsers}
+          userId={selectedUserId ?? 0}
+      />
 
     </Layout>
   );
