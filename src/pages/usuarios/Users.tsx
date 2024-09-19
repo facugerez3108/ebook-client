@@ -40,6 +40,10 @@ const UsersPage = () => {
 
   //edit user modal
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const handleEditClick = (id: number) => {
+    setSelectedUserId(id);
+    setIsEditModalOpen(true);
+};
 
 
   const fetchUsers = async () => {
@@ -137,7 +141,7 @@ const UsersPage = () => {
                   <td className="p-3">{user.email}</td>
                   <td className="p-3">{user.createdAt}</td>
                   <td className="p-3">
-                    <button onClick={() => setIsEditModalOpen(true)} className="text-blue-500 hover:text-blue-600 mr-2">
+                    <button onClick={() => handleEditClick(user.id)} className="text-blue-500 hover:text-blue-600 mr-2">
                       <Edit size={18} />
                     </button>
                     <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:text-red-600">
@@ -216,7 +220,7 @@ const UsersPage = () => {
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
           refreshUsers={fetchUsers}
-          userId={selectedUserId ?? 0}
+          id={selectedUserId ?? 0}
       />
 
     </Layout>

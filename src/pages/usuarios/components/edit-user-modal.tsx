@@ -6,14 +6,14 @@ import toast from "react-hot-toast";
 interface EditUserProps {
   isOpen: boolean;
   onClose: () => void;
-  userId: number | null;
+  id: number | null;
   refreshUsers: () => void;
 }
 
 const EditUserModal: React.FC<EditUserProps> = ({
   isOpen,
   onClose,
-  userId,
+  id,
   refreshUsers,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,10 +26,10 @@ const EditUserModal: React.FC<EditUserProps> = ({
 
   useEffect(() => {
     const fetchUserData = async () => {
-        if (userId != null){
+        if (id != null){
             setIsLoading(true);
             try{
-                const data = await getUser(userId);
+                const data = await getUser(id);
                 setUserData({
                     name: data.name,
                     email: data.email,
@@ -47,7 +47,7 @@ const EditUserModal: React.FC<EditUserProps> = ({
         fetchUserData();
     }
     
-  }, [isOpen, userId]);
+  }, [isOpen, id]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -61,14 +61,14 @@ const EditUserModal: React.FC<EditUserProps> = ({
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(userId === null) return;
+    if(id === null) return;
 
     setIsLoading(true);
 
     const { name, email, role } = userData;
 
     try {
-      await editUser(userId, name, email, role);
+      await editUser(id, name, email, role);
       toast.success("Usuario actualizado correctamente");
       refreshUsers();
     } catch (err) {

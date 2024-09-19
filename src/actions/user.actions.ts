@@ -20,7 +20,7 @@ export const createUser = async (name: string, email: string, password: string, 
 
 export const editUser = async (id: number, name: string, email: string, role: string) => {
   try{
-    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/users/${id}`, {
+    const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/api/users/${id}`, {
       name,
       email,
       role
