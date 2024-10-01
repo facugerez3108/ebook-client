@@ -45,10 +45,10 @@ const EditCategory: React.FC<EditUserProps> = ({
     },[isOpen, id])
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {title, value} = e.target;
+        const {name, value} = e.target;
         setCategoriesData((prevData) => ({
             ...prevData,
-            [title]: value,
+            [name]: value,
         }));
     }
     

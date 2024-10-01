@@ -36,7 +36,7 @@ export const getCategories = async () => {
 
 export const editCategories = async (id: number, title: string) => {
     try{
-        const response = await axios.put(`${serverUrl}/api/categorias/${id}`, {title});
+        const response = await axios.patch(`${serverUrl}/api/categorias/${id}`, {title});
         console.log(response.data);
         return response.data;
     }catch(error){
