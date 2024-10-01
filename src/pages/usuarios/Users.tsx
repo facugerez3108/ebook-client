@@ -1,5 +1,5 @@
 import Layout from "../../layout/layout";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Search,
   ChevronLeft,
@@ -9,7 +9,7 @@ import {
   Edit,
   Trash2,
 } from "lucide-react";
-import { getUsers, createUser, deleteUser, editUser } from "../../actions/user.actions";
+import { getUsers, deleteUser} from "../../actions/user.actions";
 
 //MODALS
 import Alert from "../../components/ui/alert";

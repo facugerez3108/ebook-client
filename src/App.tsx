@@ -7,6 +7,7 @@ import UsersPage from './pages/usuarios/Users';
 import BooksPage from './pages/libros/Books';
 import LoansPage from './pages/prestamos/Loans';
 import StudentsPage from './pages/estudiantes/Students';
+import Categories from './pages/categories';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/libros' element={<BooksPage />} />
           <Route path='/estudiantes' element={<LoansPage />} />
           <Route path='/prestamos' element={<StudentsPage />} />
+          <Route path="/categories" element={<Categories />} />
         </Routes>
       </Router>
     </div>

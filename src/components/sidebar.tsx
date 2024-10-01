@@ -6,7 +6,8 @@ import {
   BookCopy, 
   GraduationCap,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  ReceiptText
 } from 'lucide-react'
 
 const Sidebar = () => {
@@ -15,9 +16,10 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
     { name: 'Usuarios', icon: Users, href: '/usuarios'  },
-    { name: 'Prestamos', icon: BookOpen, href: '/prestamos'  },
-    { name: 'Libros', icon: BookCopy, href: '/libros'  },
+    { name: 'Prestamos', icon: BookCopy, href: '/prestamos'  },
+    { name: 'Libros', icon: BookOpen, href: '/libros'  },
     { name: 'Estudiantes', icon: GraduationCap, href: '/estudiantes'  },
+    { name: 'Categorias', icon: ReceiptText, href: '/categories'}
   ]
 
   return (
