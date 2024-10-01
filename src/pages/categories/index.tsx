@@ -55,14 +55,14 @@ const Categories = () => {
     fetchCategories();
   }, []);
 
-  const filteredCategories = categories?.length 
-  ? categories.filter((category) =>
-      category.title.toLowerCase().includes(searchItem.toLowerCase())
-    ) 
-  : [];
+  const filteredCategories = categories?.length
+    ? categories.filter((category) =>
+        category.title.toLowerCase().includes(searchItem.toLowerCase())
+      )
+    : [];
 
-  const indexOfFirstCategories = currentPage - catPerPage;
-  const indexOfLastCategories = indexOfFirstCategories * catPerPage;
+  const indexOfFirstCategories = (currentPage - 1) * catPerPage;
+  const indexOfLastCategories = currentPage * catPerPage;
   const currentCategories = filteredCategories.slice(
     indexOfFirstCategories,
     indexOfLastCategories
@@ -78,7 +78,9 @@ const Categories = () => {
   const confirmDelete = async () => {
     if (selectedCategoryId !== null) {
       await deleteCategories(selectedCategoryId);
-      setCategories(categories.filter((category) => category.id !== selectedCategoryId))
+      setCategories(
+        categories.filter((category) => category.id !== selectedCategoryId)
+      );
       setIsAlertOpen(false);
       setSelectedCategoryId(null);
     }
@@ -135,43 +137,51 @@ const Categories = () => {
               </tr>
             </thead>
             <tbody>
-                {filteredCategories.length === 0 ? (
-                    <tr>
-                        <td colSpan={3} className="text-center p-3">No hay categorías creadas</td>
-                    </tr>
-                ) : (
-                   currentCategories.map((category) => (
-                        <tr key={category.id} className="border-b">
-                            <td className="p-3">{category.title}</td>
-                            <td className="p-3">{category.createdAt}</td>
-                            <td className="p-3">
-                                <button onClick={() => handleEditClick(category.id)} className="text-blue-500 hover:text-blue-600 mr-2">
-                                    <Edit size={18} />
-                                </button>
-                                <button onClick={() => handleDelete(category.id)} className="text-red-500 hover:text-red-600">
-                                    <Trash2 size={18} />
-                                </button>
-                            </td>
-                        </tr>
-                    ))
-                )}
+              {filteredCategories.length === 0 ? (
+                <tr>
+                  <td colSpan={3} className="text-center p-3">
+                    No hay categorías creadas
+                  </td>
+                </tr>
+              ) : (
+                currentCategories.map((category) => (
+                  <tr key={category.id} className="border-b">
+                    <td className="p-3">{category.title}</td>
+                    <td className="p-3">{category.createdAt}</td>
+                    <td className="p-3">
+                      <button
+                        onClick={() => handleEditClick(category.id)}
+                        className="text-blue-500 hover:text-blue-600 mr-2"
+                      >
+                        <Edit size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(category.id)}
+                        className="text-red-500 hover:text-red-600"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
           <div className="p-4 flex justify-between items-center">
-             <div> 
-                Mostrando {indexOfFirstCategories + 1} a{" "}
-                {Math.min(indexOfLastCategories, filteredCategories.length)} de{" "}
-                {filteredCategories.length} registros
-             </div>
-             <div className="flex items-center">
-                <button
-                    onClick={() => setCurrentPage(1)}
-                    disabled={currentPage === 1}
-                    className="px-2 py-1 rounded bg-gray-200 text-gray-600 disabled:opacity-50"
-                >   
-                    <ChevronLeft size={18} /> 
-                </button>
-                <button
+            <div>
+              Mostrando {indexOfFirstCategories + 1} a{" "}
+              {Math.min(indexOfLastCategories, filteredCategories.length)} de{" "}
+              {filteredCategories.length} registros
+            </div>
+            <div className="flex items-center">
+              <button
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+                className="px-2 py-1 rounded bg-gray-200 text-gray-600 disabled:opacity-50"
+              >
+                <ChevronsLeft size={18} />
+              </button>
+              <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
                 className="px-2 py-1 rounded bg-gray-200 text-gray-600 disabled:opacity-50 ml-2"
@@ -195,14 +205,13 @@ const Categories = () => {
               >
                 <ChevronsRight size={18} />
               </button>
-             </div>
+            </div>
           </div>
         </div>
       </div>
 
-
       {/** Modal Alert */}
-      <Alert 
+      <Alert
         type="warning"
         message="Confirmar Eliminación"
         description="¿Estas seguro que quieres eliminar esta categoría? No podras revertir esta elección"
@@ -211,7 +220,7 @@ const Categories = () => {
         onConfirm={confirmDelete}
       />
       {/** FIN MODAL ALERT */}
-      
+
       {/** Modal Create */}
       <CreateCategory
         isOpen={isCreateModalOpen}
@@ -227,7 +236,6 @@ const Categories = () => {
         refreshCategories={fetchCategories}
         id={selectedCategoryId ?? 0}
       />
-
     </Layout>
   );
 };
