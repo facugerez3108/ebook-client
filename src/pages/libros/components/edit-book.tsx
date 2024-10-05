@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import Modal from '../../../components/ui/modal';
-import { getBook, updateBooks } from '../../../actions/book.actions';
-import { getCategories } from '../../../actions/categories.actions';
-import toast from 'react-hot-toast';
+import React, { useState, useEffect } from "react";
+import Modal from "../../../components/ui/modal";
+import { getBook, updateBooks } from "../../../actions/book.actions";
+import { getCategories } from "../../../actions/categories.actions";
+import toast from "react-hot-toast";
 
 interface EditBookProps {
   isOpen: boolean;
@@ -23,14 +23,14 @@ const EditBookModal: React.FC<EditBookProps> = ({
   refreshBooks,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [bookData, setBookData] = useState({
-    title: '',
-    autor: '',
-    cantidad: '',
-    code: '',
-    categoryId: '',
+    title: "",
+    autor: "",
+    cantidad: "",
+    code: "",
+    categoryId: "",
   });
 
   useEffect(() => {
@@ -55,13 +55,25 @@ const EditBookModal: React.FC<EditBookProps> = ({
         }
       }
     };
-  
+
+    const fetchCategories = async () => {
+      try {
+        const categoriesData = await getCategories();
+        setCategories(categoriesData); // Guarda las categorías en el estado
+      } catch (err) {
+        setError("Error al obtener las categorías");
+      }
+    };
+
     if (isOpen) {
       fetchBookData();
+      fetchCategories(); // Obtén las categorías cuando se abra el modal
     }
   }, [isOpen, id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setBookData((prevData) => ({
       ...prevData,
@@ -77,12 +89,19 @@ const EditBookModal: React.FC<EditBookProps> = ({
 
     const { title, autor, cantidad, code, categoryId } = bookData;
     try {
-      await updateBooks(id, title, autor, Number(cantidad), code, Number(categoryId));
-      toast.success('Libro actualizado correctamente');
+      await updateBooks(
+        id,
+        title,
+        autor,
+        Number(cantidad),
+        code,
+        Number(categoryId)
+      );
+      toast.success("Libro actualizado correctamente");
       refreshBooks();
       onClose();
     } catch (err) {
-      setError('Error al actualizar el libro');
+      setError("Error al actualizar el libro");
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +117,10 @@ const EditBookModal: React.FC<EditBookProps> = ({
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSave}>
         <div className="mb-4">
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-700"
+          >
             Título
           </label>
           <input
@@ -112,7 +134,10 @@ const EditBookModal: React.FC<EditBookProps> = ({
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="autor" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="autor"
+            className="block text-sm font-medium text-gray-700"
+          >
             Autor
           </label>
           <input
@@ -126,7 +151,10 @@ const EditBookModal: React.FC<EditBookProps> = ({
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="cantidad" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="cantidad"
+            className="block text-sm font-medium text-gray-700"
+          >
             Cantidad
           </label>
           <input
@@ -140,7 +168,10 @@ const EditBookModal: React.FC<EditBookProps> = ({
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="code" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="code"
+            className="block text-sm font-medium text-gray-700"
+          >
             Código
           </label>
           <input
@@ -154,7 +185,10 @@ const EditBookModal: React.FC<EditBookProps> = ({
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="categoryId"
+            className="block text-sm font-medium text-gray-700"
+          >
             Categoría
           </label>
           <select
@@ -179,7 +213,7 @@ const EditBookModal: React.FC<EditBookProps> = ({
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             disabled={isLoading}
           >
-            {isLoading ? 'Guardando...' : 'Guardar'}
+            {isLoading ? "Guardando..." : "Guardar"}
           </button>
         </div>
       </form>

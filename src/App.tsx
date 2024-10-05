@@ -18,8 +18,8 @@ function App() {
           <Route path='/dashboard' element={<DashboardPage />} />
           <Route path='/usuarios' element={<UsersPage />} />
           <Route path='/libros' element={<BooksPage />} />
-          <Route path='/estudiantes' element={<LoansPage />} />
-          <Route path='/prestamos' element={<StudentsPage />} />
+          <Route path='/prestamos' element={<LoansPage />} />
+          <Route path='/estudiantes' element={<StudentsPage />} />
           <Route path="/categories" element={<Categories />} />
         </Routes>
       </Router>
