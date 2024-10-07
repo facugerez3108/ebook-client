@@ -32,9 +32,7 @@ const StudentsPage = () => {
 
   //alert modal
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [selectedStudentId, setSelectedStudentId] = useState<number | null>(
-    null
-  );
+  const [selectedStudentId, setSelectedStudentId] = useState<number | null>(null);
 
   //create user modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -223,6 +221,12 @@ const StudentsPage = () => {
       />
 
       {/** MODAL PARA EDITAR ESTUDIANTE */}
+      <EditStudentModal 
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        refreshStudents={fetchStudents}
+        id={selectedStudentId ?? 0}
+      />
 
     </Layout>
   );
