@@ -42,7 +42,9 @@ const CreatePrestamoModal: React.FC<CreatePrestamoProps> = ({
   const [filteredBooks, setFilteredBooks] = useState<BooksProps[]>([]);
   const [filteredClients, setFilteredClients] = useState<ClientsProps[]>([]);
   const [selectedBook, setSelectedBook] = useState<BooksProps | null>(null);
-  const [selectedClient, setSelectedClient] = useState<ClientsProps | null>(null);
+  const [selectedClient, setSelectedClient] = useState<ClientsProps | null>(
+    null
+  );
 
   const [clientSearchTerm, setClientSearchTerm] = useState("");
   const [bookSearchTerm, setBookSearchTerm] = useState("");
@@ -78,32 +80,50 @@ const CreatePrestamoModal: React.FC<CreatePrestamoProps> = ({
 
   // Manejo de búsqueda para clientes
   const handleClientSearch = (searchTerm: string) => {
-    setClientSearchTerm(searchTerm); 
+    setClientSearchTerm(searchTerm);
     if (searchTerm === "") {
-        setFilteredClients([]);
+      setFilteredClients([]);
     } else {
-        const filtered = clients.filter(client =>
-            client.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            client.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            client.codigo.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredClients(filtered);
+      const filtered = clients.filter(
+        (client) =>
+          client.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          client.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          client.codigo.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredClients(filtered);
     }
-};
+  };
 
-// Manejo de búsqueda para libros
-const handleBookSearch = (searchTerm: string) => {
-    setBookSearchTerm(searchTerm); 
+  // Manejo de búsqueda para libros
+  const handleBookSearch = (searchTerm: string) => {
+    setBookSearchTerm(searchTerm);
     if (searchTerm === "") {
-        setFilteredBooks([]);
+      setFilteredBooks([]);
     } else {
-        const filtered = books.filter(book =>
-            book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            book.code.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredBooks(filtered);
+      const filtered = books.filter(
+        (book) =>
+          book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.code.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredBooks(filtered);
     }
-};
+  };
+
+  const handleClientSelect = (client: ClientsProps) => {
+    // Guardar el cliente seleccionado en el estado
+    setSelectedClient(client);
+    // Mostrar el nombre y apellido en el input
+    setClientSearchTerm(
+      `${client.nombre} ${client.apellido} - ${client.codigo}`
+    );
+    setFilteredClients([]); // Limpiar la lista
+  };
+
+  const handleBookSelect = (book: BooksProps) => {
+    setSelectedBook(book);
+    setBookSearchTerm(`${book.title} - ${book.code}`);
+    setFilteredBooks([]); // Limpiar la lista
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -171,13 +191,7 @@ const handleBookSearch = (searchTerm: string) => {
               {filteredClients.map((client) => (
                 <li
                   key={client.id}
-                  onClick={() => {
-                    setSelectedClient(client);
-                    setClientSearchTerm(
-                      `${client.nombre} ${client.apellido} - ${client.codigo}`
-                    );
-                    setFilteredClients([]); // Ocultar la lista después de la selección
-                  }}
+                  onClick={() => handleClientSelect(client)}
                   className={`p-2 cursor-pointer hover:bg-gray-100 ${
                     selectedClient?.id === client.id ? "bg-gray-200" : ""
                   }`}
@@ -210,11 +224,7 @@ const handleBookSearch = (searchTerm: string) => {
               {filteredBooks.map((book) => (
                 <li
                   key={book.id}
-                  onClick={() => {
-                    setSelectedBook(book);
-                    setBookSearchTerm(`${book.title} - ${book.code}`);
-                    setFilteredBooks([]); // Ocultar la lista después de la selección
-                  }}
+                  onClick={() => handleBookSelect(book)}
                   className={`p-2 cursor-pointer hover:bg-gray-100 ${
                     selectedBook?.id === book.id ? "bg-gray-200" : ""
                   }`}

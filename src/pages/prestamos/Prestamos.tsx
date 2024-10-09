@@ -10,6 +10,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { getPrestamos, deletePrestamos } from "../../actions/prestamos.actions";
+import { Books, Comprador } from "../../types/types";
 
 //Modals
 import Alert from "../../components/ui/alert";
@@ -18,8 +19,8 @@ import EditPrestamoModal from "./components/edit-prestamo-modal";
 
 interface Prestamo {
   id: number;
-  bookId: number;
-  clientId: number;
+  comprador: Comprador;
+  book: Books;
   fechaPrestamo: string;
   fechaDevolucion: string;
   codigo: string;
@@ -65,11 +66,15 @@ const PrestamosPage = () => {
         .toLowerCase()
         .includes(searchItem.toLowerCase()) ||
       prestamo.codigo.toLowerCase().includes(searchItem.toLowerCase()) ||
-      prestamo.bookId
+      prestamo.book.title
         .toString()
         .toLowerCase()
         .includes(searchItem.toLowerCase()) ||
-      prestamo.clientId
+      prestamo.comprador.nombre
+        .toString()
+        .toLowerCase()
+        .includes(searchItem.toLowerCase()) ||
+      prestamo.comprador.apellido
         .toString()
         .toLowerCase()
         .includes(searchItem.toLowerCase())
@@ -150,17 +155,32 @@ const PrestamosPage = () => {
                 <th className="text-left p-3">Fecha de Devolución</th>
                 <th className="text-left p-3">Código</th>
                 <th className="text-left p-3">Libro</th>
+                <th className="text-left p-3">Estatus</th>
                 <th className="text-left p-3">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {currentPrestamos.map((prestamo) => (
                 <tr key={prestamo.id} className="border-b">
-                  <td className="p-3">{prestamo.clientId}</td>
-                  <td className="p-3">{prestamo.fechaPrestamo}</td>
-                  <td className="p-3">{prestamo.fechaPrestamo}</td>
+                  <td className="p-3">
+                    {prestamo.comprador.nombre} {prestamo.comprador.apellido} (
+                    {prestamo.comprador.codigo})
+                  </td>
+                  <td className="p-3">
+                    {new Date(prestamo.fechaPrestamo).toLocaleDateString(
+                      "es-ES"
+                    )}
+                  </td>
+                  <td className="p-3">
+                    {new Date(prestamo.fechaDevolucion).toLocaleDateString(
+                      "es-ES"
+                    )}
+                  </td>
                   <td className="p-3">{prestamo.codigo}</td>
-                  <td className="p-3">{prestamo.bookId}</td>
+                  <td className="p-3">
+                    {prestamo.book.title} ({prestamo.book.code})
+                  </td>
+                  <td className={`p-3 ${prestamo.status === "PENDIENTE" ? "bg-orange-500 border-lg text-white" : "bg-green-500 border-lg text-white"}`}>{prestamo.status}</td>
                   <td className="p-3">
                     <button
                       onClick={() => handleEditClick(prestamo.id)}
@@ -226,7 +246,7 @@ const PrestamosPage = () => {
       <Alert
         type="warning"
         message="Confirmar Eliminación"
-        description="¿Estas seguro que quieres eliminar este libro? No podras revertir esta elección"
+        description="¿Estas seguro que quieres eliminar este prestamo? No podras revertir esta elección y no quedará registros de este usuario"
         onClose={() => setIsAlertOpen(false)}
         isOpen={isAlertOpen}
         onConfirm={confirmDelete}
