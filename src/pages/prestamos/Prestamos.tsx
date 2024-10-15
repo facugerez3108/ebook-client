@@ -258,6 +258,14 @@ const PrestamosPage = () => {
         onClose={() => setIsCreateModalOpen(false)}
         refreshPrestamos={fetchPrestamos}
       />
+
+      {/** Modal Edit */}
+      <EditPrestamoModal 
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        id={selectedPrestamoId ?? 0}
+        refreshPrestamos={fetchPrestamos}
+      />
     </Layout>
   );
 };

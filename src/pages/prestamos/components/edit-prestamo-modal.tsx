@@ -29,18 +29,17 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
   isOpen,
   onClose,
   id,
-  refreshPrestamos
+  refreshPrestamos,
 }) => {
-  
   const [prestamoData, setPrestamoData] = useState({
     fechaDevolucion: "",
     codigo: "",
     status: "PENDIENTE",
     comprador: "",
     book: "",
-    fechaPrestamo: ""
-  })
-  
+    fechaPrestamo: "",
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [books, setBooks] = useState<BooksProps[]>([]);
@@ -131,51 +130,197 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
     setFilteredBooks([]); // Limpiar la lista
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const {name, value} = e.target;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
     setPrestamoData((prevData) => ({
-        ...prevData,
-        [name]: value
-    }))
-  }
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (id === null) return;
-    
+
     setIsLoading(true);
-    const { fechaDevolucion, codigo, status, comprador, book, fechaPrestamo } = prestamoData;
+    const { fechaDevolucion, codigo, status, fechaPrestamo } = prestamoData;
 
-    try{
-        //await editPrestamos(
-        //    id,
-        //    fechaDevolucion,
-        //    fechaPrestamo,
-        //    codigo,
-        //    status,
-        //    comprador,
-        //    book
-        //);
-
-        toast.success("Prestamo editado correctamente");
-        refreshPrestamos();
-        onClose();
-
-    }catch(err){
-        setError("Error al editar el prestamo")
-    }finally{
-        setIsLoading(false);
+    const compradorId = selectedClient
+      ? parseInt(selectedClient.id.toString(), 10)
+      : null;
+    const bookId = selectedBook
+      ? parseInt(selectedBook.id.toString(), 10)
+      : null;
+    
+    if (!compradorId || !bookId) {
+      setError("Debe seleccionar un cliente y un libro.");
+      setIsLoading(false);
+      return;
     }
-  }
+
+    try {
+      await editPrestamos(
+        id,
+        fechaDevolucion,
+        fechaPrestamo,
+        codigo,
+        status,
+        compradorId,
+        bookId
+      );
+
+      toast.success("Prestamo editado correctamente");
+      refreshPrestamos();
+      onClose();
+    } catch (err) {
+      setError("Error al editar el prestamo");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Modal
-      title="Crear Prestamo"
-      description="Edita los datos del prestamo, recuerda que tanto los ESTUDIANTES como los LIBROS deben estar registrados previamente antes de agregarlos."
+      title="Editar Prestamo"
+      description="Edita los datos del prestamo, recuerda que tanto los ESTUDIANTES como los LIBROS deben estar registrados previamente antes de editarlos."
       isOpen={isOpen}
       onClose={onClose}
     >
+      <form onSubmit={handleSave} className="space-y-4">
         {error && <p className="text-red-500">{error}</p>}
+        {/* Busqueda y selección del cliente */}
+        <div>
+          <label
+            htmlFor="searchClient"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Buscar Cliente (Nombre, Apellido o Código)
+          </label>
+          <input
+            type="text"
+            id="searchClient"
+            placeholder="Buscar cliente..."
+            value={clientSearchTerm}
+            onChange={(e) => handleClientSearch(e.target.value)}
+            className="border rounded px-3 py-2 w-full"
+          />
+          {filteredClients.length > 0 && (
+            <ul className="mt-2 border rounded max-h-40 overflow-y-auto">
+              {filteredClients.map((client) => (
+                <li
+                  key={client.id}
+                  onClick={() => handleClientSelect(client)}
+                  className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                    selectedClient?.id === client.id ? "bg-gray-200" : ""
+                  }`}
+                >
+                  {client.nombre} {client.apellido} - Código: {client.codigo}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Búsqueda y selección del libro */}
+        <div>
+          <label
+            htmlFor="searchBook"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Buscar Libro (Título o Código)
+          </label>
+          <input
+            type="text"
+            id="searchBook"
+            placeholder="Buscar libro..."
+            value={bookSearchTerm}
+            onChange={(e) => handleBookSearch(e.target.value)}
+            className="border rounded px-3 py-2 w-full"
+          />
+          {filteredBooks.length > 0 && (
+            <ul className="mt-2 border rounded max-h-40 overflow-y-auto">
+              {filteredBooks.map((book) => (
+                <li
+                  key={book.id}
+                  onClick={() => handleBookSelect(book)}
+                  className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                    selectedBook?.id === book.id ? "bg-gray-200" : ""
+                  }`}
+                >
+                  {book.title} - Código: {book.code}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Fecha de devolución */}
+        <div>
+          <label
+            htmlFor="fechaDevolucion"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Fecha de Devolución
+          </label>
+          <input
+            type="date"
+            id="fechaDevolucion"
+            value={prestamoData.fechaDevolucion}
+            onChange={handleChange}
+            className="border rounded px-3 py-2 w-full"
+            required
+          />
+        </div>
+
+        {/* Código y Estado */}
+        <div>
+          <label
+            htmlFor="codigo"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Código de Préstamo
+          </label>
+          <input
+            type="text"
+            id="codigo"
+            value={prestamoData.codigo}
+            onChange={handleChange}
+            placeholder="Código de Prestamo"
+            className="border rounded px-3 py-2 w-full"
+            required
+          />
+
+          <label
+            htmlFor="status"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Estatus del Préstamo
+          </label>
+          <select
+            id="status"
+            value={prestamoData.status}
+            onChange={handleChange}
+            className="border rounded px-3 py-2 w-full"
+            required
+          >
+            <option value="PENDIENTE">Pendiente</option>
+            <option value="DEVUELTO">Devuelto</option>
+          </select>
+        </div>
+
+        {/* Botón de submit */}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600"
+            disabled={isLoading}
+          >
+            {isLoading ? "Creando..." : "Crear Préstamo"}
+          </button>
+        </div>
+      </form>
     </Modal>
   );
 };

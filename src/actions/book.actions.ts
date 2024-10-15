@@ -10,7 +10,7 @@ export const createBook = async (
     cantidad: number
 ) => {
     try{
-        const response = await axios.post(`${serverUrl}/api/libros`, {
+        const response = await axios.post(`${serverUrl}/api/libros/`, {
             title,
             autor,
             categoryId,
@@ -26,7 +26,7 @@ export const createBook = async (
 
 export const getBooks = async () => {
     try{
-        const response = await axios.get(`${serverUrl}/api/libros`);
+        const response = await axios.get(`${serverUrl}/api/libros/`);
         return response.data;
     }catch(error){
         console.log(error);

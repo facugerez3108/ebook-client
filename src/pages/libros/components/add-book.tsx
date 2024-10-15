@@ -38,6 +38,7 @@ const CreateBookModal: React.FC<CreateBookModalProps> = ({
       const fetchCategories = async () => {
         try {
           const data = await getCategories();
+          console.log("Categorias obtenidas", data);
           setCategories(data);
         } catch (error) {
           setError("Error al cargar las categorías");
@@ -57,6 +58,8 @@ const CreateBookModal: React.FC<CreateBookModalProps> = ({
         setIsLoading(false);
         return;
       }
+
+      console.log("ID de la categoria seleccionada", selectedCategory)
 
       await createBook(title, autor, cantidad, code, selectedCategory);
       toast.success("Libro creado correctamente");
@@ -161,7 +164,10 @@ const CreateBookModal: React.FC<CreateBookModalProps> = ({
           <select
             id="category"
             value={selectedCategory ?? ""}
-            onChange={(e) => setSelectedCategory(Number(e.target.value))}
+            onChange={(e) => {
+              console.log("Categoría seleccionada:", e.target.value);
+              setSelectedCategory(Number(e.target.value));
+            }}
             className="border rounded px-3 py-2 w-full"
             required
           >
