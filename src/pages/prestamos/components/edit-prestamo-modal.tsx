@@ -83,12 +83,12 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
         const bookData = books.find(book => book.id === data.bookId);
   
         setPrestamoData({
-          fechaDevolucion: data.fechaDevolucion.split("T")[0], // Formato de fecha
-          codigo: data.codigo,
-          status: data.status,
+          fechaDevolucion: data.fechaDevolucion.split("T")[0] || "", // Formato de fecha
+          codigo: data.codigo || "",
+          status: data.status || "",
           comprador: clientData ? `${clientData.nombre} ${clientData.apellido} - ${clientData.codigo}` : "",
           book: bookData ? `${bookData.title} - ${bookData.code}` : "",
-          fechaPrestamo: data.fechaPrestamo.split("T")[0],
+          fechaPrestamo: data.fechaPrestamo.split("T")[0] || "",
         });
   
         setSelectedClient(clientData || null);
@@ -103,18 +103,15 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
       }
     } catch (error) {
       setError("Error al cargar los datos del préstamo");
+    }finally{
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (isOpen && id) {
-      fetchPrestamoDetails(id);
-    }
-  }, [isOpen, id]);
-
-  useEffect(() => {
     if (isOpen && id !== null) {
       try {
+        setError("")
         fetchBooks();
         fetchClients();
         fetchPrestamoDetails(id);
@@ -184,39 +181,39 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (id === null) return;
-
+  
     setIsLoading(true);
     const { fechaDevolucion, codigo, status, fechaPrestamo } = prestamoData;
-
-    const compradorId = selectedClient
-      ? parseInt(selectedClient.id.toString(), 10)
-      : null;
-    const bookId = selectedBook
-      ? parseInt(selectedBook.id.toString(), 10)
-      : null;
-
+  
+    // Solo usar el ID si el cliente y el libro fueron seleccionados correctamente
+    const compradorId = selectedClient ? parseInt(selectedClient.id.toString(), 10) : null;
+    const bookId = selectedBook ? parseInt(selectedBook.id.toString(), 10) : null;
+  
+    // Validar que se haya seleccionado cliente y libro si se intenta actualizar
     if (!compradorId || !bookId) {
       setError("Debe seleccionar un cliente y un libro.");
       setIsLoading(false);
       return;
     }
-
+  
+    // Crear un objeto solo con los campos que se pueden y deben actualizar
+    const updateData: any = {
+      status,
+      fechaDevolucion: new Date(fechaDevolucion),
+    };
+  
+    // Incluir fechaPrestamo solo si ha sido modificada
+    if (prestamoData.fechaPrestamo && prestamoData.fechaPrestamo !== fechaPrestamo) {
+      updateData.fechaPrestamo = new Date(prestamoData.fechaPrestamo);
+    }
+  
     try {
-      await editPrestamos(
-        id,
-        bookId,
-        compradorId,
-        new Date(fechaPrestamo),
-        new Date(fechaDevolucion),
-        codigo,
-        status
-      );
-
-      toast.success("Prestamo editado correctamente");
+      await editPrestamos(id, updateData);
+      toast.success("Préstamo editado correctamente");
       refreshPrestamos();
       onClose();
     } catch (err) {
-      setError("Error al editar el prestamo");
+      setError("Error al editar el préstamo");
     } finally {
       setIsLoading(false);
     }
@@ -363,7 +360,7 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
             className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600"
             disabled={isLoading}
           >
-            {isLoading ? "Creando..." : "Crear Préstamo"}
+            {isLoading ? "Guardando..." : "Editar Préstamo"}
           </button>
         </div>
       </form>

@@ -49,28 +49,20 @@ export const getPrestamos = async () => {
 
 export const editPrestamos = async (
     id: number,
-    bookId: number,
-    compradorId: number,
-    fechaPrestamo: Date,
-    fechaDevolucion: Date,
-    codigo: string,
-    status: string
-) => {
-    try{
-        const response = await axios.patch(`${serverUrl}/api/prestamos/${id}`, {
-            bookId,
-            compradorId,
-            fechaPrestamo,
-            fechaDevolucion,
-            codigo,
-            status
-        });
-        return response.data;
-    }catch(error){
-        console.log(error);
-        return error;
+    updateData: {
+      fechaPrestamo?: Date;
+      fechaDevolucion?: Date;
+      status?: string;
     }
-}
+  ) => {
+    try {
+      const response = await axios.patch(`${serverUrl}/api/prestamos/${id}`, updateData);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 
 export const deletePrestamos = async (id: number) => {
     try{
