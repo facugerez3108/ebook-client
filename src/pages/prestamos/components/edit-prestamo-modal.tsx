@@ -3,6 +3,7 @@ import Modal from "../../../components/ui/modal";
 import { editPrestamos } from "../../../actions/prestamos.actions";
 import { getBooks } from "../../../actions/book.actions";
 import { getClients } from "../../../actions/client.actions";
+import { getPrestamo } from "../../../actions/prestamos.actions";
 import toast from "react-hot-toast";
 
 interface EditPrestamoProps {
@@ -72,16 +73,56 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
     }
   };
 
+  //fetchPrestamo
+  const fetchPrestamoDetails = async (id: number) => {
+    try {
+      const data = await getPrestamo(id);
+      if (data) {
+        // Obtener detalles completos del comprador y del libro
+        const clientData = clients.find(client => client.id === data.compradorId);
+        const bookData = books.find(book => book.id === data.bookId);
+  
+        setPrestamoData({
+          fechaDevolucion: data.fechaDevolucion.split("T")[0], // Formato de fecha
+          codigo: data.codigo,
+          status: data.status,
+          comprador: clientData ? `${clientData.nombre} ${clientData.apellido} - ${clientData.codigo}` : "",
+          book: bookData ? `${bookData.title} - ${bookData.code}` : "",
+          fechaPrestamo: data.fechaPrestamo.split("T")[0],
+        });
+  
+        setSelectedClient(clientData || null);
+        setSelectedBook(bookData || null);
+        setClientSearchTerm(
+          clientData ? `${clientData.nombre} ${clientData.apellido} - ${clientData.codigo}` : ""
+        );
+        setBookSearchTerm(bookData ? `${bookData.title} - ${bookData.code}` : "");
+  
+        // Limpiar el error si se cargan los datos exitosamente
+        setError("");
+      }
+    } catch (error) {
+      setError("Error al cargar los datos del préstamo");
+    }
+  };
+
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && id) {
+      fetchPrestamoDetails(id);
+    }
+  }, [isOpen, id]);
+
+  useEffect(() => {
+    if (isOpen && id !== null) {
       try {
         fetchBooks();
         fetchClients();
+        fetchPrestamoDetails(id);
       } catch (error) {
         setError("Error al cargar los datos");
       }
     }
-  }, [isOpen]);
+  }, [isOpen, id]);
 
   // Manejo de búsqueda para clientes
   const handleClientSearch = (searchTerm: string) => {
@@ -153,7 +194,7 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
     const bookId = selectedBook
       ? parseInt(selectedBook.id.toString(), 10)
       : null;
-    
+
     if (!compradorId || !bookId) {
       setError("Debe seleccionar un cliente y un libro.");
       setIsLoading(false);
@@ -163,12 +204,12 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
     try {
       await editPrestamos(
         id,
-        fechaDevolucion,
-        fechaPrestamo,
-        codigo,
-        status,
+        bookId,
         compradorId,
-        bookId
+        new Date(fechaPrestamo),
+        new Date(fechaDevolucion),
+        codigo,
+        status
       );
 
       toast.success("Prestamo editado correctamente");
@@ -201,6 +242,7 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
           <input
             type="text"
             id="searchClient"
+            name="comprador"
             placeholder="Buscar cliente..."
             value={clientSearchTerm}
             onChange={(e) => handleClientSearch(e.target.value)}
@@ -234,6 +276,7 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
           <input
             type="text"
             id="searchBook"
+            name="book"
             placeholder="Buscar libro..."
             value={bookSearchTerm}
             onChange={(e) => handleBookSearch(e.target.value)}
@@ -267,6 +310,7 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
           <input
             type="date"
             id="fechaDevolucion"
+            name="fechaDevolucion"
             value={prestamoData.fechaDevolucion}
             onChange={handleChange}
             className="border rounded px-3 py-2 w-full"
@@ -285,6 +329,7 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
           <input
             type="text"
             id="codigo"
+            name="codigo"
             value={prestamoData.codigo}
             onChange={handleChange}
             placeholder="Código de Prestamo"
@@ -300,6 +345,7 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
           </label>
           <select
             id="status"
+            name="status"
             value={prestamoData.status}
             onChange={handleChange}
             className="border rounded px-3 py-2 w-full"
