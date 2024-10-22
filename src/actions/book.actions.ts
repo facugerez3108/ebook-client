@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverUrl = process.env.REAC_APP_SERVER_URL || 'http://localhost:5000';
+const serverUrl = process.env.REAC_APP_SERVER_URL || 'https://ebook-server-psi.vercel.app';
 
 export const createBook = async (
     title: string, 

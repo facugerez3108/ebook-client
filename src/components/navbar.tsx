@@ -3,7 +3,7 @@ import { User } from "lucide-react";
 import AuthContext from "../context/AuthContext";
 
 const Navbar = () => {
-  const { user, isAuthenticated, logout } = useContext(AuthContext);
+  const { user, isAuthenticated } = useContext(AuthContext);
 
   return (
     <nav className="bg-black text-white">

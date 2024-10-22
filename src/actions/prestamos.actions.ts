@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-psi.vercel.app';
 
 export const createPrestamo = async (
     bookId: number,
