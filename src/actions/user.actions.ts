@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-drab.vercel.app';
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-six.vercel.app';
 
 export const createUser = async (name: string, email: string, password: string, role: string) => {
   try{

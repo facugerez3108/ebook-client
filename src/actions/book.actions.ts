@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverUrl = process.env.REAC_APP_SERVER_URL || 'https://ebook-server-drab.vercel.app';
+const serverUrl = process.env.REAC_APP_SERVER_URL || 'https://ebook-server-six.vercel.app';
 
 export const createBook = async (
     title: string, 

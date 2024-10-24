@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AuthResponse } from '../types/types';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-drab.vercel.app';
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-six.vercel.app';
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
     try{
