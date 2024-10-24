@@ -18,6 +18,8 @@ export const createPrestamo = async (
             fechaDevolucion,
             codigo,
             status
+        },  {
+            withCredentials: true
         });
         return response.data;
         
@@ -29,7 +31,9 @@ export const createPrestamo = async (
 
 export const getPrestamo = async (id: number) => {
     try{
-        const response = await axios.get(`${serverUrl}/api/prestamos/${id}`);
+        const response = await axios.get(`${serverUrl}/api/prestamos/${id}`,  {
+            withCredentials: true
+        });
         return response.data;
     }catch(error){
         console.log(error);
@@ -39,7 +43,9 @@ export const getPrestamo = async (id: number) => {
 
 export const getPrestamos = async () => {
     try{
-        const response = await axios.get(`${serverUrl}/api/prestamos`);
+        const response = await axios.get(`${serverUrl}/api/prestamos`,  {
+            withCredentials: true
+        });
         return response.data;
     }catch(error){
         console.log(error);
@@ -56,7 +62,9 @@ export const editPrestamos = async (
     }
   ) => {
     try {
-      const response = await axios.patch(`${serverUrl}/api/prestamos/${id}`, updateData);
+      const response = await axios.patch(`${serverUrl}/api/prestamos/${id}`, updateData,  {
+        withCredentials: true
+    });
       return response.data;
     } catch (error) {
       console.log(error);
@@ -66,7 +74,9 @@ export const editPrestamos = async (
 
 export const deletePrestamos = async (id: number) => {
     try{
-        const response = await axios.delete(`${serverUrl}/api/prestamos/${id}`);
+        const response = await axios.delete(`${serverUrl}/api/prestamos/${id},  {
+            withCredentials: true
+        }`);
         return response.data;
     }catch(error){
         console.log(error);

@@ -16,6 +16,8 @@ export const createBook = async (
             categoryId,
             code,
             cantidad
+        }, {
+            withCredentials: true
         });
         return response.data;
     }catch(error){
@@ -26,7 +28,9 @@ export const createBook = async (
 
 export const getBooks = async () => {
     try{
-        const response = await axios.get(`${serverUrl}/api/libros/`);
+        const response = await axios.get(`${serverUrl}/api/libros/`,  {
+            withCredentials: true
+        });
         return response.data;
     }catch(error){
         console.log(error);
@@ -36,7 +40,9 @@ export const getBooks = async () => {
 
 export const getBook = async (id: number) => {
     try{
-        const response = await axios.get(`${serverUrl}/api/libros/${id}`);
+        const response = await axios.get(`${serverUrl}/api/libros/${id}`,  {
+            withCredentials: true
+        });
         return response.data;
     }catch(error){
         console.log(error);
@@ -59,6 +65,8 @@ export const updateBooks = async (
             categoryId,
             code,
             cantidad
+        },  {
+            withCredentials: true
         });
         return response.data;
     }catch(error){
@@ -69,7 +77,9 @@ export const updateBooks = async (
 
 export const deleteBook = async (id: number) => {
     try{
-        const response = await axios.delete(`${serverUrl}/api/libros/${id}`);
+        const response = await axios.delete(`${serverUrl}/api/libros/${id}`,  {
+            withCredentials: true
+        });
         return response.data;
     }catch(error){
         console.log(error);

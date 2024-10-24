@@ -8,6 +8,8 @@ export const createClient = async (nombre: string, apellido: string, codigo: str
             nombre,
             apellido,
             codigo
+        },  {
+            withCredentials: true
         });
         console.log(response.data);
         return response.data;
@@ -18,7 +20,9 @@ export const createClient = async (nombre: string, apellido: string, codigo: str
 
 export const getClients = async () => {
     try{
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/clientes/`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/clientes/`,  {
+            withCredentials: true
+        });
         return response.data;
     }catch(error){
         console.log(error);
@@ -28,7 +32,9 @@ export const getClients = async () => {
 export const getClient = async (id: number) => {
     try {
         
-        const response = await axios.get(`${serverUrl}/api/clientes/${id}`);
+        const response = await axios.get(`${serverUrl}/api/clientes/${id}`,  {
+            withCredentials: true
+        });
         console.log(response.data);
         return response.data;
 
@@ -43,6 +49,8 @@ export const updateClient = async (id: number, nombre: string, apellido: string,
             nombre,
             apellido,
             codigo
+        },  {
+            withCredentials: true
         });
         console.log(response.data);
         return response.data;
@@ -53,7 +61,9 @@ export const updateClient = async (id: number, nombre: string, apellido: string,
 
 export const deleteClient = async (id: number) => {
     try{
-        const response = await axios.delete(`${serverUrl}/api/clientes/${id}`);
+        const response = await axios.delete(`${serverUrl}/api/clientes/${id}`,  {
+            withCredentials: true
+        });
         console.log(response.data);
         return response.data;
     }catch(error){

@@ -9,7 +9,9 @@ export const createUser = async (name: string, email: string, password: string, 
       email,
       password,
       role
-    });
+    },  {
+      withCredentials: true
+  });
     console.log(response.data);
     return response.data;
 
@@ -24,7 +26,9 @@ export const editUser = async (id: number, name: string, email: string, role: st
       name,
       email,
       role
-    });
+    },  {
+      withCredentials: true
+  });
     console.log(response.data);
     return response.data;
 
@@ -36,7 +40,9 @@ export const editUser = async (id: number, name: string, email: string, role: st
 export const getUser = async (id: number) => {
   try {
     
-    const response = await axios.get(`${serverUrl}/api/users/${id}`);
+    const response = await axios.get(`${serverUrl}/api/users/${id}`,  {
+      withCredentials: true
+  });
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -47,7 +53,9 @@ export const getUser = async (id: number) => {
 
 export const getUsers = async () => {
   try{
-    const response = await axios.get(`${serverUrl}/api/users`);
+    const response = await axios.get(`${serverUrl}/api/users`,  {
+      withCredentials: true
+  });
     console.log(response.data);
     return response.data;
 
@@ -61,8 +69,9 @@ export const getUserRole = async (token: string) => {
     const response = await axios.get(`${serverUrl}/api/users/role`, {
         headers: {
             Authorization: `Bearer ${token}`
-        }
-    });
+        },
+        withCredentials: true
+    }, );
     return response.data.role;
 
   }catch(error){
@@ -73,7 +82,9 @@ export const getUserRole = async (token: string) => {
 
 export const deleteUser = async (id: number) => {
   try{
-    const response = await axios.delete(`${serverUrl}/api/users/${id}`);
+    const response = await axios.delete(`${serverUrl}/api/users/${id}`,  {
+      withCredentials: true
+  });
     console.log(response.data);
     return response.data;
 
