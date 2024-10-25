@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverUrl = process.env.REAC_APP_SERVER_URL || 'https://ebook-server-six.vercel.app';
+const serverUrl = process.env.REAC_APP_SERVER_URL || 'https://ebook-server-production.up.railway.app';
 
 export const createBook = async (
     title: string, 
@@ -16,8 +16,6 @@ export const createBook = async (
             categoryId,
             code,
             cantidad
-        }, {
-            withCredentials: true
         });
         return response.data;
     }catch(error){
@@ -28,9 +26,7 @@ export const createBook = async (
 
 export const getBooks = async () => {
     try{
-        const response = await axios.get(`${serverUrl}/api/libros/`,  {
-            withCredentials: true
-        });
+        const response = await axios.get(`${serverUrl}/api/libros/`,);
         return response.data;
     }catch(error){
         console.log(error);
@@ -40,9 +36,7 @@ export const getBooks = async () => {
 
 export const getBook = async (id: number) => {
     try{
-        const response = await axios.get(`${serverUrl}/api/libros/${id}`,  {
-            withCredentials: true
-        });
+        const response = await axios.get(`${serverUrl}/api/libros/${id}`);
         return response.data;
     }catch(error){
         console.log(error);
@@ -65,8 +59,6 @@ export const updateBooks = async (
             categoryId,
             code,
             cantidad
-        },  {
-            withCredentials: true
         });
         return response.data;
     }catch(error){
@@ -77,9 +69,7 @@ export const updateBooks = async (
 
 export const deleteBook = async (id: number) => {
     try{
-        const response = await axios.delete(`${serverUrl}/api/libros/${id}`,  {
-            withCredentials: true
-        });
+        const response = await axios.delete(`${serverUrl}/api/libros/${id}`);
         return response.data;
     }catch(error){
         console.log(error);

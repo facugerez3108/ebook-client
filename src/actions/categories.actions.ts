@@ -4,9 +4,7 @@ const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-six.
 
 export const createCategory = async (title: string) => {
     try{
-        const respose = await axios.post(`${serverUrl}/api/categorias`, {title},  {
-            withCredentials: true
-        });
+        const respose = await axios.post(`${serverUrl}/api/categorias`, {title});
         console.log(respose.data);
         return respose.data;
     }catch(error){
@@ -17,9 +15,7 @@ export const createCategory = async (title: string) => {
 
 export const getCategory = async (id: number) => {
     try{
-        const response = await axios.get(`${serverUrl}/api/categorias/${id}`,  {
-            withCredentials: true
-        });
+        const response = await axios.get(`${serverUrl}/api/categorias/${id}`);
         console.log(response.data);
         return response.data;
     }catch(error){
@@ -30,9 +26,7 @@ export const getCategory = async (id: number) => {
 
 export const getCategories = async () => {
     try{
-        const response = await axios.get(`${serverUrl}/api/categorias`,  {
-            withCredentials: true
-        });
+        const response = await axios.get(`${serverUrl}/api/categorias`);
         console.log(response.data);
         return response.data;
     }catch(error){
@@ -42,9 +36,7 @@ export const getCategories = async () => {
 
 export const editCategories = async (id: number, title: string) => {
     try{
-        const response = await axios.patch(`${serverUrl}/api/categorias/${id}`, {title},  {
-            withCredentials: true
-        });
+        const response = await axios.patch(`${serverUrl}/api/categorias/${id}`, {title});
         console.log(response.data);
         return response.data;
     }catch(error){
@@ -55,9 +47,7 @@ export const editCategories = async (id: number, title: string) => {
 
 export const deleteCategories = async (id: number) => {
     try{
-        const response = await axios.delete(`${serverUrl}/api/categorias/${id}`,  {
-            withCredentials: true
-        });
+        const response = await axios.delete(`${serverUrl}/api/categorias/${id}`);
         console.log(response.data);
         return response.data;
     }catch(error){

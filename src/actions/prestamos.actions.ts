@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-six.vercel.app';
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-production.up.railway.app';
 
 export const createPrestamo = async (
     bookId: number,
@@ -18,8 +18,6 @@ export const createPrestamo = async (
             fechaDevolucion,
             codigo,
             status
-        },  {
-            withCredentials: true
         });
         return response.data;
         
@@ -31,9 +29,7 @@ export const createPrestamo = async (
 
 export const getPrestamo = async (id: number) => {
     try{
-        const response = await axios.get(`${serverUrl}/api/prestamos/${id}`,  {
-            withCredentials: true
-        });
+        const response = await axios.get(`${serverUrl}/api/prestamos/${id}`);
         return response.data;
     }catch(error){
         console.log(error);
@@ -43,9 +39,7 @@ export const getPrestamo = async (id: number) => {
 
 export const getPrestamos = async () => {
     try{
-        const response = await axios.get(`${serverUrl}/api/prestamos`,  {
-            withCredentials: true
-        });
+        const response = await axios.get(`${serverUrl}/api/prestamos`);
         return response.data;
     }catch(error){
         console.log(error);
@@ -62,9 +56,7 @@ export const editPrestamos = async (
     }
   ) => {
     try {
-      const response = await axios.patch(`${serverUrl}/api/prestamos/${id}`, updateData,  {
-        withCredentials: true
-    });
+      const response = await axios.patch(`${serverUrl}/api/prestamos/${id}`, updateData);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -74,9 +66,7 @@ export const editPrestamos = async (
 
 export const deletePrestamos = async (id: number) => {
     try{
-        const response = await axios.delete(`${serverUrl}/api/prestamos/${id},  {
-            withCredentials: true
-        }`);
+        const response = await axios.delete(`${serverUrl}/api/prestamos/${id}`);
         return response.data;
     }catch(error){
         console.log(error);

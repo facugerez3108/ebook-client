@@ -1,16 +1,14 @@
 import axios from 'axios';
 import { AuthResponse } from '../types/types';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-six.vercel.app';
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-production.up.railway.app';
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
     try{
         const response = await axios.post<AuthResponse>(`${serverUrl}/api/auth/login`, {
             email,
             password
-        }, {
-            withCredentials: true
-        })
+        },) 
         console.log(response.data);
         localStorage.setItem('logged', 'true');
         
@@ -23,9 +21,7 @@ export const login = async (email: string, password: string): Promise<AuthRespon
 
 export const logout = async () => {
     try{
-        const response = await axios.post(`${serverUrl}/api/auth/logout`, {
-            withCredentials: true
-        });
+        const response = await axios.post(`${serverUrl}/api/auth/logout`,);
         console.log(response.data);
         return response.data;
     }catch(error){

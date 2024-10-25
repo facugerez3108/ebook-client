@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-six.vercel.app';
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-production.up.railway.app';
 
 export const createUser = async (name: string, email: string, password: string, role: string) => {
   try{
@@ -9,9 +9,7 @@ export const createUser = async (name: string, email: string, password: string, 
       email,
       password,
       role
-    },  {
-      withCredentials: true
-  });
+    });
     console.log(response.data);
     return response.data;
 
@@ -26,9 +24,7 @@ export const editUser = async (id: number, name: string, email: string, role: st
       name,
       email,
       role
-    },  {
-      withCredentials: true
-  });
+    });
     console.log(response.data);
     return response.data;
 
@@ -40,9 +36,7 @@ export const editUser = async (id: number, name: string, email: string, role: st
 export const getUser = async (id: number) => {
   try {
     
-    const response = await axios.get(`${serverUrl}/api/users/${id}`,  {
-      withCredentials: true
-  });
+    const response = await axios.get(`${serverUrl}/api/users/${id}`);
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -53,9 +47,7 @@ export const getUser = async (id: number) => {
 
 export const getUsers = async () => {
   try{
-    const response = await axios.get(`${serverUrl}/api/users`,  {
-      withCredentials: true
-  });
+    const response = await axios.get(`${serverUrl}/api/users`);
     console.log(response.data);
     return response.data;
 
@@ -70,7 +62,6 @@ export const getUserRole = async (token: string) => {
         headers: {
             Authorization: `Bearer ${token}`
         },
-        withCredentials: true
     }, );
     return response.data.role;
 
@@ -82,9 +73,7 @@ export const getUserRole = async (token: string) => {
 
 export const deleteUser = async (id: number) => {
   try{
-    const response = await axios.delete(`${serverUrl}/api/users/${id}`,  {
-      withCredentials: true
-  });
+    const response = await axios.delete(`${serverUrl}/api/users/${id}`);
     console.log(response.data);
     return response.data;
 
