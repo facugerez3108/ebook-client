@@ -9,7 +9,6 @@ export const createClient = async (nombre: string, apellido: string, codigo: str
             apellido,
             codigo
         });
-        console.log(response.data);
         return response.data;
     }catch(error){
         console.log(error);
@@ -29,7 +28,6 @@ export const getClient = async (id: number) => {
     try {
         
         const response = await axios.get(`${serverUrl}/api/clientes/${id}`);
-        console.log(response.data);
         return response.data;
 
     }catch(error){
@@ -44,7 +42,6 @@ export const updateClient = async (id: number, nombre: string, apellido: string,
             apellido,
             codigo
         });
-        console.log(response.data);
         return response.data;
     }catch(error){
         console.log(error);
@@ -54,7 +51,6 @@ export const updateClient = async (id: number, nombre: string, apellido: string,
 export const deleteClient = async (id: number) => {
     try{
         const response = await axios.delete(`${serverUrl}/api/clientes/${id}`);
-        console.log(response.data);
         return response.data;
     }catch(error){
         console.log(error);

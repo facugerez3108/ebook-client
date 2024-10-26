@@ -22,7 +22,6 @@ export const createPrestamo = async (
         return response.data;
         
     }catch(error){
-        console.log(error);
         return error;
     }
 }
@@ -32,7 +31,6 @@ export const getPrestamo = async (id: number) => {
         const response = await axios.get(`${serverUrl}/api/prestamos/${id}`);
         return response.data;
     }catch(error){
-        console.log(error);
         return error;
     }
 }
@@ -42,7 +40,6 @@ export const getPrestamos = async () => {
         const response = await axios.get(`${serverUrl}/api/prestamos`);
         return response.data;
     }catch(error){
-        console.log(error);
         return error;
     }
 }
@@ -59,7 +56,6 @@ export const editPrestamos = async (
       const response = await axios.patch(`${serverUrl}/api/prestamos/${id}`, updateData);
       return response.data;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   };
@@ -69,7 +65,6 @@ export const deletePrestamos = async (id: number) => {
         const response = await axios.delete(`${serverUrl}/api/prestamos/${id}`);
         return response.data;
     }catch(error){
-        console.log(error);
         return error;
     }
 }

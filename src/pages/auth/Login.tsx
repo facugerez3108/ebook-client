@@ -26,7 +26,6 @@ const LoginPage = () => {
       authLogin(accessToken);
       navigate("/dashboard");
     } catch (error) {
-      console.log(error);
     }
   };
 

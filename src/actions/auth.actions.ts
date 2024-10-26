@@ -9,12 +9,10 @@ export const login = async (email: string, password: string): Promise<AuthRespon
             email,
             password
         },) 
-        console.log(response.data);
         localStorage.setItem('logged', 'true');
         
         return response.data;
     }catch(error){
-        console.log(error);
         throw error;
     }
 }
@@ -22,10 +20,9 @@ export const login = async (email: string, password: string): Promise<AuthRespon
 export const logout = async () => {
     try{
         const response = await axios.post(`${serverUrl}/api/auth/logout`,);
-        console.log(response.data);
         return response.data;
     }catch(error){
-        console.log(error);
+        throw error;
     }
 }
 
