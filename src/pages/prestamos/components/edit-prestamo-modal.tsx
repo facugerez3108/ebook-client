@@ -119,6 +119,7 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
         setError("Error al cargar los datos");
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, id]);
 
   // Manejo de búsqueda para clientes
