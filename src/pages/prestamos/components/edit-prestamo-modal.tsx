@@ -183,7 +183,7 @@ const EditPrestamoModal: React.FC<EditPrestamoProps> = ({
     if (id === null) return;
   
     setIsLoading(true);
-    const { fechaDevolucion, codigo, status, fechaPrestamo } = prestamoData;
+    const { fechaDevolucion, status, fechaPrestamo } = prestamoData;
   
     // Solo usar el ID si el cliente y el libro fueron seleccionados correctamente
     const compradorId = selectedClient ? parseInt(selectedClient.id.toString(), 10) : null;
