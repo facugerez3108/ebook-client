@@ -15,3 +15,32 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Enhanced slideshow animation for login background */
+@keyframes slideshow {
+  0%, 30% {
+    opacity: 1;
+  }
+  35%, 65% {
+    opacity: 0;
+  }
+  70%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Smooth transition slideshow animations */
+.animate-slideshow-delay-6s {
+  animation: slideshow 18s infinite;
+  animation-delay: 6s;
+}
+
+.animate-slideshow-delay-12s {
+  animation: slideshow 18s infinite;
+  animation-delay: 12s;
+}
+
+/* Additional utility for smoother transitions */
+.transition-opacity-slow {
+  transition: opacity 2s ease-in-out;
+}
