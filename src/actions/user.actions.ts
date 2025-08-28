@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-5f72.onrender.com';
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
 
 export const createUser = async (name: string, email: string, password: string, role: string) => {
   try{
