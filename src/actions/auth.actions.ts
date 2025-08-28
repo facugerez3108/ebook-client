@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AuthResponse } from '../types/types';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-production.up.railway.app';
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'https://ebook-server-5f72.onrender.com';
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
     try{
